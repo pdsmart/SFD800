@@ -1,0 +1,51 @@
+Name     SFD800 ;
+PartNo   PAL12L6 ;
+Date     20/05/2021 ;
+Revision 01 ;
+Designer Philip Smart ;
+Company  engineers@work ;
+Assembly SFD800 ;
+Location  ;
+Device   g16v8a;
+
+/* *************** INPUT PINS *********************/
+PIN  1   = A0                        ; /* Address bus A0                  */ 
+PIN  2   = A1                        ; /*             A1                  */ 
+PIN  3   = A2                        ; /*             A2                  */ 
+PIN  4   = A3                        ; /*             A3                  */ 
+PIN  6   = A4                        ; /*             A4                  */ 
+PIN  7   = A5                        ; /*             A5                  */ 
+PIN  8   = A6                        ; /*             A6                  */ 
+PIN  9   = A7                        ; /*             A7                  */ 
+PIN 19   = IORQn                     ; /* Z80 IORQ active low             */ 
+PIN 11   = WRn                       ; /* Z80 WR active low               */ 
+PIN 12   = RDn                       ; /* Z80 RD active low               */ 
+PIN 5    = RESET                     ; /* System Reset active high        */ 
+
+/* *************** OUTPUT PINS *********************/
+PIN 13   = BUSn                      ; /* BUS direction, low = read into Z80, high = write to FD IC's */ 
+PIN 18   = FDCn                      ; /* WD1773 Chip Select active low I/O - Address 0xD8 .. 0xDB */ 
+PIN 14   = DRIVEn                    ; /* Disk Drive Select active low - Address 0xDC */ 
+PIN 17   = DDENn                     ; /* Drive Density select active low - Address 0xDE */ 
+PIN 15   = RESn                      ; /* Peripheral Reset active low */ 
+PIN 16   = SIDEn                     ; /* Disk Head Select active low - Address 0xDD */ 
+
+/* Decoder equations. */
+FIELD ADDR = [A7..A0];
+WD1773SEL  = !IORQn & ADDR:[D8..DB];
+SIDESEL    = !IORQn & !WRn & ADDR:[DD..DD];
+DRIVESEL   = !IORQn & !WRn & ADDR:[DC..DC];
+DDENSEL    = !IORQn & !WRn & ADDR:[DE..DE];  
+BUSREAD    = !IORQn & !RDn & ADDR:[D8..DE];
+
+/* Assign output pins based on equations. */
+BUSn       = !BUSREAD;
+RESn       = !RESET;
+FDCn       = !WD1773SEL;
+SIDEn      = !SIDESEL;
+DRIVEn     = !DRIVESEL;
+DDENn      = !DDENSEL;
+
+
+
+

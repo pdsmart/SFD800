@@ -1,0 +1,64 @@
+%SIGNAL
+PIN   1 =  A0 
+PIN   2 =  A1 
+PIN   3 =  A2 
+PIN   4 =  A3 
+PIN   6 =  A4 
+PIN   7 =  A5 
+PIN   8 =  A6 
+PIN   9 =  A7 
+PIN  13 =  BUSn 
+PIN  17 =  DDENn 
+PIN  14 =  DRIVEn 
+PIN  18 =  FDCn 
+PIN  19 =  IORQn 
+PIN  12 =  RDn 
+PIN   5 =  RESET 
+PIN  15 =  RESn 
+PIN  16 =  SIDEn 
+PIN  11 =  WRn 
+%END
+
+%FIELD
+FIELD ADDR = A7,A6,A5,A4,A3,A2,A1,A0
+%END
+
+%EQUATION
+BUSREAD =>
+    !A0 & A1 & A2 & A3 & A4 & !A5 & A6 & A7 & !IORQn & !RDn
+  # !A2 & A3 & A4 & !A5 & A6 & A7 & !IORQn & !RDn
+  # !A1 & A2 & A3 & A4 & !A5 & A6 & A7 & !IORQn & !RDn
+
+BUSn =>
+    !A0 & A1 & A2 & A3 & A4 & !A5 & A6 & A7 & !IORQn & !RDn
+  # !A2 & A3 & A4 & !A5 & A6 & A7 & !IORQn & !RDn
+  # !A1 & A2 & A3 & A4 & !A5 & A6 & A7 & !IORQn & !RDn
+
+DDENSEL =>
+    !A0 & A1 & A2 & A3 & A4 & !A5 & A6 & A7 & !IORQn & !WRn
+
+DDENn =>
+    !A0 & A1 & A2 & A3 & A4 & !A5 & A6 & A7 & !IORQn & !WRn
+
+DRIVESEL =>
+    !A0 & !A1 & A2 & A3 & A4 & !A5 & A6 & A7 & !IORQn & !WRn
+
+DRIVEn =>
+    !A0 & !A1 & A2 & A3 & A4 & !A5 & A6 & A7 & !IORQn & !WRn
+
+FDCn =>
+    !A2 & A3 & A4 & !A5 & A6 & A7 & !IORQn
+
+RESn =>
+    !RESET
+
+SIDESEL =>
+    A0 & !A1 & A2 & A3 & A4 & !A5 & A6 & A7 & !IORQn & !WRn
+
+SIDEn =>
+    A0 & !A1 & A2 & A3 & A4 & !A5 & A6 & A7 & !IORQn & !WRn
+
+WD1773SEL =>
+    !A2 & A3 & A4 & !A5 & A6 & A7 & !IORQn
+
+%END
